@@ -1,0 +1,64 @@
+body {
+    font: 400 15px/1.8 Lato, sans-serif;
+    color: #777;
+}
+h1 {
+    text-align: center;
+}
+
+header {
+    text-align: center;
+    font-family: Montserrat, sans-serif;
+    letter-spacing: 4px;
+    padding-top: 20px;
+    margin-left: 30px;
+    font-size: 30px;
+}
+
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 12px;
+}
+
+.btn {
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 0;
+    border: 0;
+    font-size: 12px !important;
+    letter-spacing: 2px;
+    opacity: 0.9;
+}
+
+h3, h4 {
+    margin: 10px 0 30px 0;
+    letter-spacing: 10px;      
+    font-size: 20px;
+    color: #111;
+}
+
+.container {
+    margin-top: 100px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.thumbnail {
+    background-color:gray;
+    margin:10px;
+    width:150px;
+    height:150px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.thumbnail.circle{
+    border-radius: 100%;
+    width: 100px;
+    height: 100px;
+  }
+

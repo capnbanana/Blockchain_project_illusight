@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/nav %>
+
+    <% if(isAuthenticated){ %>
+      <div class='container'>
+          <header>Upload your Masterpiece!</header>
+          <form class='uploadForm form-horizontal' id='uploadForm' action='/upload' method='post' enctype='multipart/form-data'>
+          <!-- <form class='uploadForm form-horizontal' id='uploadForm' enctype='multipart/form-data'> -->
+              <div class='form-group'>
+                  <label for="title">your wallet address:</label>
+                  <input type="text" class="form-control" id="currentUser" name="currentUser" value='<%= currentUser.walletAddr %>'>
+  
+                  <label for="title">title:</label>
+                  <input type="text" class="form-control" id="title" name="title">
+  
+                  <label for="title">price:</label>
+                  <input type="text" class="form-control" id="price" name="price">
+  
+                  <label for="code">copyright code:</label>
+                  <input type="text" class="form-control" id="code" name="code">
+              
+                  <label for="upload">upload file:</label>
+                  <input type="file" class="form-control" id="file" name="file">
+  
+                  <button type="submit" class="btn btn-default" onclick='test()'>Submit</button>
+                  <!-- <button type="submit" class="btn btn-default" onclick="registerMasterpiece()">Submit</button> -->
+                  <!-- <button type="submit" name='submit' class="btn btn-default">Submit</button> -->
+              </div>
+          </form>
+      </div>
+    
+    <% } else { %>
+      <div class='container'>
+        <h1>Please log in to upload your masterpiece!</h1>
+      </div>
+      
+    <% } %>
+
+
+
+
+  </body>
+</html>

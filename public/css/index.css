@@ -1,0 +1,40 @@
+/* 이미지 전체화면으로 채우기 */
+
+#mainPart {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+}
+
+#mainPart img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    min-width: 50%;
+    min-height: 50%;
+}
+
+/* 이미지 위 텍스트 */
+#mainPartText {
+    background: -webkit-linear-gradient(#96efff, #ffbaed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    position: absolute;
+    top: 70%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 170px;
+    /* color: white; */
+    font-family: Montserrat, sans-serif;
+    letter-spacing: 4px;
+    line-height: 0.7em;
+    font-style: oblique;
+    opacity: 0.3;
+
+}

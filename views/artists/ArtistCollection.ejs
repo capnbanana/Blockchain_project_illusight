@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/masterpiece.css">
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/nav %>
+    
+    <div class='container artistGallery'>
+        <div class='headSection'>
+            <div class='userInfo'>
+                <div class='thumbnail circle' style='background-image: url("/images/profile_default.jpeg")'></span></div>
+                <div class='profileUserInfo'>
+                <div id='userId'><%= user.userId %></div>
+                <div><%= user.username %></div>
+                <div><%= user.walletAddr %></div>
+                <div><button>send message</button></div>
+            </div>
+        </div>
+        <ul class="floats">
+        <% if(masterpiece == null || masterpiece.length == 0){ %>
+            <div class="noData" colspan=100> There is no masterpiece yet.</div>
+        <% } %>
+
+        <% masterpiece.forEach(function(masterpiece) { %>
+            <div class='imgDisplay'>
+            <a href="/artists/<%= masterpiece._id %>" rel='thumbnail'>
+                <div class='thumbnail' style='background-image: url("/uploads/<%= masterpiece.fileAddr %>")'></div>
+                <div class='overlay'>
+                <div class='imgTitle'><%= masterpiece.title %></div>
+                </div>
+            </a>
+            </div>
+        <% }) %>
+        </ul>
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,131 @@
+/* myWorks.ejs 프로필 섹션 css */
+
+.headSection div.userInfo{
+    /* background-color: pink; */
+    display: flex;
+    justify-content: center;
+}
+
+.headSection div.userInfo > div {
+    font-family: Montserrat, sans-serif;
+    letter-spacing: 4px;
+    padding-top: 20px;
+    margin-left: 30px;
+    /* background-color: #f1f1f1; */
+}
+.headSection div > div.profileUserInfo > div#userId {
+    font-size: 30px;
+}
+
+.headSection div > div.profileUserInfo > div {
+    /* background-color: yellow; */
+    font-size: 11px;
+}
+.userProfileImg img{
+    width: 100px;
+    height: 100px;
+
+}
+
+/* myWorks.ejs 이미지 출력 섹션 */
+
+* {
+box-sizing: border-box;
+}
+
+.imgDisplay {
+padding: 0 6px;
+float: left;
+width: 24.99999%;
+/* width: 33.3333%; */
+position: relative;
+}
+/* responsive action!! */
+@media only screen and (max-width: 700px) {
+    .imgDisplay {
+        width: 49.99999%;
+        margin: 6px 0;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .imgDisplay {
+        width: 100%;
+    }
+}
+
+/* overlay action!! */
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5;
+    right: 0;
+    height: 150px;
+    width: 150px;
+    opacity: 0;
+    transition: .5s ease;
+
+    margin: 10px;
+}
+
+
+.imgDisplay:hover .overlay {
+    opacity: 1;
+}
+
+.imgTitle {
+    color: white;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 0;
+    font-size: 12px !important;
+    letter-spacing: 4px;
+    opacity: 0.8;
+
+}
+
+
+/* 이미지 디테일 출력 섹션 */
+div .imgOriginal {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+.copyrightPhrase {
+    text-align: center;
+}
+
+.imgDescription {
+    text-align: center;
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 0;
+    border: 0;
+    font-size: 14px !important;
+    letter-spacing: 2px;
+    opacity: 0.9;
+}
+
+/* 이미지구매 버튼 */
+.purchase_btn {
+    font-family: Montserrat, sans-serif;
+    background-color: #f7efdc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    font-size: 20px !important;
+    letter-spacing: 2px;
+    opacity: 0.9;
+    box-shadow: 0 2px 10px #d8d8d8;
+    
+}

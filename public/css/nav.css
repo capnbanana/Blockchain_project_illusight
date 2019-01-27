@@ -1,0 +1,61 @@
+.navbar {
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 0;
+    background-color: transparent;
+    background-image: linear-gradient(to bottom right, #00a8b7, #cc99ff);
+    /* background-image: linear-gradient(to bottom right, #00cc99, #cc99ff); */
+    border: 0;
+    font-size: 13px !important;
+    letter-spacing: 4px;
+    opacity: 0.8;
+}
+.navbar div div .navbar-brand {
+    font-family: cursive;
+    /* font-family: Courier New, sans-serif; */
+    font-style: oblique;
+    font-size: 30px;
+    letter-spacing: 1px;
+    color: black !important;
+}
+.navbar li a, .navbar { 
+    color: #ffffff !important;
+}
+.navbar-nav li a:hover {
+    color: black !important;
+}
+.navbar-nav li.active a {
+    color: black !important;
+    /* background-color: #29292c !important; */
+}
+
+
+
+/* old css */
+/* .navbar {
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 0;
+    background-color: #1b976e;
+    background-image: linear-gradient(to bottom right, #00cc99, #cc99ff);
+    border: 0;
+    font-size: 12px !important;
+    letter-spacing: 4px;
+    opacity: 0.6;
+    box-shadow: 0 0 10px 0 black;
+}
+.navbar div div > .navbar-brand {
+    font-family: cursive;
+    font-style: oblique;
+    font-size: 25px;
+    letter-spacing: 1px;
+    color: #ededed !important;
+}
+.navbar li a, .navbar { 
+    color: #fff !important;
+}
+.navbar-nav li a:hover {
+    color: #fff !important;
+}
+.navbar-nav li.active a {
+    color: #fff !important;
+    background-color: #29292c !important;
+} */

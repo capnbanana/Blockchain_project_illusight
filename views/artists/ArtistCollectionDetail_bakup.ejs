@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="/css/masterpiece.css">
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/nav %>
+
+    <div class="container user user-show">
+
+      <div class="buttons">
+        <a class="btn btn-default" href="/myWorks">Back</a>
+        <a class="btn btn-default" href="/myWorks/<%= masterpiece._id %>/edit">Edit</a>
+      </div>
+
+      <div class='myWorksDetail'>
+          <header class='headPart'><%= masterpiece.title %></header>
+          
+          <div class='imgDescription'>
+              <div id='author'>Author : <span><b><%= user.username %></b></span></div>
+              <div id='price'>Purchased Price: <span><%= masterpiece.price %></span></div>
+
+              <div><button class='btn' id='purchase' onclick='purchase()'> >>purchase this masterpiece<< </button></div> 
+              <div><img src='/uploads/<%= masterpiece.fileAddr %>' class='imgOriginal'></div>
+              <div class='copyrightPhrase'>Copyright(c) <b><%= user.username %></b> All rights reserved.</div>
+              <br>
+              <div id='author'>Author Wallet Address : <span><%= masterpiece.author %></span></div>
+              <div id='infoOnBlockchain'>See info on blockchain : <a href='https://ropsten.etherscan.io/tx/<%= masterpiece.txhash %>' target="_blank"><%= masterpiece.txhash %></a></div>
+
+          </div>
+          <!-- 오리지널 -->
+          <div class='myWorksDetail'>
+            <div id='author'>Author: <span><%= masterpiece.author %></span></div>
+            <div><%= masterpiece.fileAddr %></div>
+            <div id='infoOnBlockchain'>See info on blockchain : <a href='https://ropsten.etherscan.io/tx/<%= masterpiece.txhash %>' target="_blank"><%= masterpiece.txhash %></a></div>
+            <div id='price'>Price: <span><%= masterpiece.price %></span></div>
+            <div><button id='purchase' onclick='purchase()'>purchase this masterpiece</button></div>
+            <img src='/uploads/<%= masterpiece.fileAddr %>'>
+          </div>
+
+
+
+
+        </div>
+    </div> <!-- container end -->
+  </body>
+</html>

@@ -1,0 +1,211 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/nav.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js'></script>
+
+
+<div class='navSection'>
+    <div class='navContent'>
+        <nav class='navbar navbar-default navbar-fixed-top'>
+            <div class='container-fluid'>
+                <div class='navbar-header'>
+                    <a class='navbar-brand' href='/'>Illusight</a>
+                </div>
+                <div class='menu'>
+                    <ul class='nav navbar-nav navbar-left'>
+                        <li><a href='/'>Main</a></li>
+                        <li><a href='/artists'>Artists</a></li>
+                        <li><a href='/upload'>Upload</a></li>
+                        <% if(isAuthenticated){ %>
+                            <li><a href='/myworks/<%= currentUser.walletAddr %>'>MyWorks</a></li>
+                            <li><a href='/purchase/<%= currentUser.walletAddr %>'>PurchaseList</a></li>
+                        <% } else { %>
+                            <li><a href='/myworks'>MyWorks</a></li>
+                        <% } %>
+                        <!-- <li><a href="#"><span class="glyphicon glyphicon-search"></span></a></li> -->
+                    </ul>
+                </div>
+                <div class='authState'>
+                    
+                    <% if(isAuthenticated){ %>
+                        <ul class='nav navbar-nav navbar-right'>
+                            <li><a href='/users/<%= currentUser.userId %>'><span class="glyphicon glyphicon-user"></span>Hi,<b><%= currentUser.username %></b>!</a></li>
+                            <li style='display:none'><a href='#'><span class='walletAddr'><span><%= currentUser.walletAddr %></span></span></a></li>
+                            <li><a href='/buyToken'><span class='glyphicon glyphicon-heart'></span><span class='userBalance'><span></span></span> ether</a></li>
+                            <li><a href='/logout'><span class="glyphicon glyphicon-log-out"></span></a></li>
+                        </ul>
+                        
+                    <% } else { %>
+                        <ul class='nav navbar-nav navbar-right'>
+                            <li><a href='/users/new'>Sign Up</a></li>
+                            <li><a href='/login'>Login<span class="glyphicon glyphicon-log-in"></span></a></li>
+                        </ul>
+                    <% } %>
+                    
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+
+<script>
+
+var url = 'http://localhost:3000/'
+$(document).ready(function(){
+    var location = window.location.href;
+    if (location == url) {
+        console.log('here');
+        
+        $('.navbar').addClass('navbarMain');
+    }
+    console.log(location);
+})
+
+
+
+let currentAccount,
+    balance;
+
+const cryptomasterpiece_ContractAddr = '0x815e84d373ea08b900b1133a631c5f1f0b8fcd4c'; //세번째
+const cryptomasterpiece_ABI = [{"constant":true,"inputs":[{"name":"_interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"approve","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"tokenId","type":"uint256"},{"name":"uri","type":"string"}],"name":"setTokenURI","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"InterfaceId_ERC165","outputs":[{"name":"","type":"bytes4"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"exists","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_creator","type":"address"},{"name":"_MasterpieceId","type":"uint256"}],"name":"removeMasterpiece","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"mint","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_title","type":"string"},{"name":"_author","type":"string"},{"name":"_publishDate","type":"string"},{"name":"_fileAddr","type":"string"}],"name":"createMasterpiece","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"Masterpieces","outputs":[{"name":"title","type":"string"},{"name":"author","type":"string"},{"name":"publishDate","type":"string"},{"name":"fileAddr","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":true,"name":"_tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_approved","type":"address"},{"indexed":true,"name":"_tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_operator","type":"address"},{"indexed":false,"name":"_approved","type":"bool"}],"name":"ApprovalForAll","type":"event"}];
+
+const IllusightToken_ContractAddr = '0x567743e7ce5e01ce64c1ff03d844525b44b6f57b';
+const IllusightToken_ABI = [{"constant":false,"inputs":[{"name":"addr","type":"address"},{"name":"note","type":"string"}],"name":"unlockTo","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"owners","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"itkTransferToPartner","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newSuperOwner","type":"address"}],"name":"changeSuperOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"addedValue","type":"uint256"},{"name":"note","type":"string"}],"name":"itkIncreaseApproval","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"itkSell","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"INITIAL_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"note","type":"string"}],"name":"lock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"delayLockBeforeValues","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"LOCK_MAX","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"itkTransferFrom","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address[]"},{"name":"values","type":"uint256[]"},{"name":"processIdHash","type":"uint256"},{"name":"userIdHash","type":"uint256[]"},{"name":"note","type":"string"}],"name":"itkBatchSellByOtherCoin","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newRoot","type":"address"}],"name":"changeRoot","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getMyUnlockValue","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"burner","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"itkBurnWhenMoveToMainnet","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"unlockAddrs","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address[]"},{"name":"values","type":"uint256[]"},{"name":"processIdHash","type":"uint256"},{"name":"userIdHash","type":"uint256[]"},{"name":"note","type":"string"}],"name":"itkBatchTransferToEcosystem","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"candidateSuperOwnerMap","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"subtractedValue","type":"uint256"}],"name":"decreaseApproval","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"},{"name":"note","type":"string"}],"name":"lockTo","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"itkApprove","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"owner","type":"address"}],"name":"newOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"itkTransfer","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"superOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newSuperOwner","type":"address"}],"name":"changeSuperOwnerByDAO","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"delayLockTimes","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"itkBurnFrom","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address[]"},{"name":"values","type":"uint256[]"},{"name":"processIdHash","type":"uint256"},{"name":"userIdHash","type":"uint256[]"},{"name":"note","type":"string"}],"name":"itkBatchTransferToBounty","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"name":"transfer","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"note","type":"string"}],"name":"unlock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"delayUnlock","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"burners","type":"address[]"},{"name":"values","type":"uint256[]"},{"name":"note","type":"string"}],"name":"itkBatchBurnWhenMoveToMainnet","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"lockValues","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"owner","type":"address"}],"name":"deleteOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"locked","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"subtractedValue","type":"uint256"},{"name":"note","type":"string"}],"name":"itkDecreaseApproval","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"setLockValue","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"addedValue","type":"uint256"}],"name":"increaseApproval","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"ownerList","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"},{"name":"note","type":"string"}],"name":"itkTransferToTeam","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"root","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"delayLock","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"delayLockValues","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"amount","type":"uint256"},{"name":"note","type":"string"}],"name":"itkMintTo","outputs":[{"name":"ret","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"receiveType","type":"uint8"}],"name":"TransferedToITKDapp","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKTransfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKTransferFrom","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKApproval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"controller","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKMintTo","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"controller","type":"address"},{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKBurnFrom","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"controller","type":"address"},{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKBurnWhenMoveToMainnet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKSell","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"processIdHash","type":"uint256"},{"indexed":false,"name":"userIdHash","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKSellByOtherCoin","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKTransferToTeam","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKTransferToPartner","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"processIdHash","type":"uint256"},{"indexed":false,"name":"userIdHash","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKTransferToEcosystem","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"processIdHash","type":"uint256"},{"indexed":false,"name":"userIdHash","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"ITKTransferToBounty","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"addr","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"time","type":"uint256"}],"name":"SetDelayLockValue","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"locked","type":"bool"},{"indexed":false,"name":"note","type":"string"}],"name":"Locked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"addr","type":"address"},{"indexed":false,"name":"locked","type":"bool"},{"indexed":false,"name":"note","type":"string"}],"name":"LockedTo","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"addr","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"note","type":"string"}],"name":"SetLockValue","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"newRoot","type":"address"}],"name":"ChangedRoot","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"newSuperOwner","type":"address"}],"name":"ChangedSuperOwner","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"newOwner","type":"address"}],"name":"AddedNewOwner","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"deletedOwner","type":"address"}],"name":"DeletedOwner","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}];
+
+
+web3js = new Web3(window.web3.currentProvider);
+// web3js = new Web3(window.web3.currentAccount);
+let myMasterpiece = web3js.eth.contract(cryptomasterpiece_ABI).at(cryptomasterpiece_ContractAddr);
+let myIllusightToken = web3js.eth.contract(IllusightToken_ABI).at(IllusightToken_ContractAddr);
+
+const date = new Date();
+const twoDigitMonth = ((date.getMonth().length+1) === 1)? (date.getMonth()+1) : '0' + (date.getMonth()+1);
+const twoDigitDate = ((date.getDate().length) === 1)? (date.getDate()) : '0' + (date.getDate());
+const currentDate = date.getFullYear() + "/" + twoDigitMonth + "/" + twoDigitDate;
+
+window.addEventListener('load', async() => {
+    // Modern dapp browsers
+    if (window.ethereum) {
+        console.log('window ethereum');
+        window.web3 = new Web3(ethereum);
+        try {
+            //Request account access if needed
+            await ethereum.enable();
+            // currentAccount = web3js.eth.accounts[0];
+            // $('.userAddr span').append(currentAccount);
+            await getAccounts();
+            await getBalance();
+        
+        } catch (err){
+            console.log(err);
+        }
+    // Legacy dapp browsers
+    } else if (window.web3) {
+        console.log('window web3')
+    // Non-dapp browsers
+    } else {
+        console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    }
+})
+function getAccounts(){
+    var loginUserWalletAddr = $('.walletAddr span').text();
+    currentAccount = loginUserWalletAddr;
+    console.log(window.web3.currentProvider.selectedAddress);
+    console.log(currentAccount);
+};
+
+function getBalance(){
+    web3.eth.getBalance(currentAccount, function(err, result){
+        if(err){
+            console.log('Cannot check your balance');
+        } else {
+            // var myEther = window.web3.fromWei(BigNumber(result).toFixed(), 'ether');
+            // var myEther = web3js.fromWei(BigNumber(result).toFixed(), 'ether');
+            
+            var myEther = web3js.fromWei(BigNumber(result), 'ether');
+            myEther = parseFloat(myEther).toFixed(3); //string >> number로 parseFloat한 다음, toFixed(3)로 소수점 셋째자리까지 출력!
+
+            console.log(myEther);
+            
+            $('.userBalance span').append(myEther);
+            balance = myEther;
+            return balance;
+        }
+    });
+};
+
+function registerMasterpiece(id, title, author, fileAddr){ //callMint()
+    console.log(id + ' / ' + title + ' / ' + author + ' / ' + fileAddr);
+
+    myMasterpiece.createMasterpiece(title, author, currentDate, fileAddr, function(err, result){
+        if(err){
+            console.log(err);
+        }
+        console.log(result); //transaction hash
+
+        var info = {
+            id: id,
+            title: title,
+            author: author,
+            publishDate: currentDate,
+            fileAddr: fileAddr,
+            txhash: result
+        }
+
+        $.post('/upload/onBlockchain', info, function(data, status){
+            // console.log(data);
+            console.log('done!!');
+        });
+    });
+};
+
+function purchase(){
+
+    var buyer = $('span.walletAddr span').text(); //로그인한 유저
+    var authorWallletAddress = $('.imgDescription #author span').text();
+    var price = $('.imgDescription #price span').text();
+    var infoOnBlockchain = $('.imgDescription #infoOnBlockchain a').text();
+    
+    console.log('buyer?????? ', buyer);
+    console.log('authorWalletAddress??????? ', authorWallletAddress);
+    console.log('price???????? ', price);
+    console.log('infoOnBlockchain??????? ', infoOnBlockchain)
+
+    var _to = authorWallletAddress;
+    var _value = price;
+    var _note = 'reason';
+
+    console.log(_to, _value, _note);
+
+    myIllusightToken.itkTransfer(_to, _value, _note, function(err, result){
+        if(err){
+            console.log(err);
+        }
+        console.log(result);
+        var info = {
+            buyer: buyer,
+            authorWallletAddress: _to,
+            price: _value,
+            txhash: result,
+            infoOnBlockchain: infoOnBlockchain
+        }
+        $.post('/artists/purchaseArtWork', info, function(err, result){
+            if(err){
+                console.log(err);
+            }
+            
+        });
+    });
+    
+}
+
+</script>
+
+

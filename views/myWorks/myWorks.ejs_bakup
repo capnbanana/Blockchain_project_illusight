@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/nav %>
+    
+    <div class='container'>
+
+
+        <% if(isAuthenticated){ %>
+          <header class='headSection'>
+            <div class='userInfo'>
+              <div class='thumbnail circle' style='background-image: url("/images/profile_default.jpeg")'></span></div>
+              <div class='profileUserInfo'>
+                <div id='userId'><%= currentUser.userId %></div>
+                <div><%= currentUser.username %></div>
+                <div><%= currentUser.walletAddr %></div>
+              </div>
+          </header>
+          <ul class="floats">
+            <% if(masterpiece == null || masterpiece.length == 0){ %>
+              <div class="noData" colspan=100> You haven't uploaded any work yet. You can upload your masterpiece and show the world your amazing creativity!</div>
+            <% } %>
+            <% masterpiece.forEach(function(masterpiece) { %>
+              <div class='masterpieceSection'>
+                <a href="/myworks/<%= currentUser.walletAddr %>/<%= masterpiece._id %>">
+                  <div class='thumbnail' style='background-image: url("/uploads/<%= masterpiece.fileAddr %>")'></div>
+                </a>
+              </div>
+            <% }) %>
+          </ul>
+            
+        <% } else { %>
+          <h1>Please log in</h1>          
+        <% } %>
+          
+        
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

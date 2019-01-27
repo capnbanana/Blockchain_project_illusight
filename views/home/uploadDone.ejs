@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body onload="registerMasterpiece('<%= test._id %>','<%= test.title %>','<%= test.author %>','<%= test.fileAddr %>')">
+    <% include ../partials/nav %>
+    <div class='container'>
+        <div id='uploadResult'>register!!!!!!</div>
+    
+        <div id='uploadResult'><%= test %></div>
+        <img src='/uploads/<%= test.fileAddr %>'>
+    </div>
+    
+  </body>
+</html>

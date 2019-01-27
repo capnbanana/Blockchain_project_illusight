@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/nav %>
+    
+    <% if(isAuthenticated){ %>
+        <div class='container artistGallery'>
+            <% if(users == null || users.length == 0){ %>
+                <div class="noData" colspan=100> There is no user yet.</div>
+            <% } %>
+            <% users.forEach(function(user) { %>
+                <li>
+                    <a href="/artists/<%= user._id %>/<%= user.walletAddr %>"><%= user.userId %></a>
+                    <% if(user.userId == currentUser.userId) { %>
+                        <span>This is my account!</span>
+                    <% } %>
+                </li>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class='container artistGallery'>
+            <h1>Please log in to explore!</h1>
+        </div>
+    <% } %>
+
+
+    
+
+  </body>
+
+</html>
